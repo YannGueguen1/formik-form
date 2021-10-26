@@ -1,17 +1,23 @@
 import React from "react";
 import { useFormik } from "formik";
+import { Formik, Field, Form } from "formik";
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function App() {
   let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const formik = useFormik({
     initialValues: {
       username: "",
-      email: "",
       password: "",
     },
-    onSubmit: (values) => {
+    onSubmit: (async (values) => {
+      await sleep(1000);
       console.log("form :", values);
-    },
+      if (values.username.match(mailformat) && values.password){
+        alert("Login Successful for:\n\n" + "Username: " + JSON.stringify(values.username, null, 2) + "\n" + "Password: " + JSON.stringify(values.password, null, 2));
+      };
+    }),
     validate: (values) => {
       let errors = {};
       if (!values.username) {
@@ -20,8 +26,8 @@ function App() {
         errors.username = "Username should be an email";
       }
       if (!values.password) errors.password = "Field required";
-      if (values.username.match(mailformat) && values.password)
-        alert("Login Successful");
+      // if (values.username.match(mailformat) && values.password)
+      //   alert("Login Successful");
       return errors;
     },
   });
@@ -57,9 +63,9 @@ function App() {
           </div>
         ) : null}
         <p>
-        <button id="submitBtn" type="submit">
-          Submit
-        </button>
+          <button id="submitBtn" type="submit">
+            Submit
+          </button>
         </p>
       </form>
     </div>
