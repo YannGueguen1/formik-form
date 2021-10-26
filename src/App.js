@@ -1,6 +1,9 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Formik, Field, Form } from "formik";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -11,13 +14,20 @@ function App() {
       username: "",
       password: "",
     },
-    onSubmit: (async (values) => {
+    onSubmit: async (values) => {
       await sleep(1000);
       console.log("form :", values);
-      if (values.username.match(mailformat) && values.password){
-        alert("Login Successful for:\n\n" + "Username: " + JSON.stringify(values.username, null, 2) + "\n" + "Password: " + JSON.stringify(values.password, null, 2));
-      };
-    }),
+      if (values.username.match(mailformat) && values.password) {
+        alert(
+          "Login Successful for:\n\n" +
+            "Username: " +
+            JSON.stringify(values.username, null, 2) +
+            "\n" +
+            "Password: " +
+            JSON.stringify(values.password, null, 2)
+        );
+      }
+    },
     validate: (values) => {
       let errors = {};
       if (!values.username) {
@@ -34,8 +44,12 @@ function App() {
 
   return (
     <div>
-      <h1>Build a Formik Form</h1>
-      <form onSubmit={formik.handleSubmit}>
+      
+      
+      <Card style={{ width: "30rem", borderWidth:"5px" }}>
+        <Card.Body>
+        <Card.Title><h1>Build a Formik Form</h1></Card.Title>
+        <form onSubmit={formik.handleSubmit}>
         <div>Username (email)</div>
         <input
           name="username"
@@ -63,11 +77,13 @@ function App() {
           </div>
         ) : null}
         <p>
-          <button id="submitBtn" type="submit">
+          <Button id="submitBtn" type="submit" variant="outline-dark">
             Submit
-          </button>
+          </Button>
         </p>
       </form>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
